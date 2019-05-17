@@ -62,13 +62,19 @@ class Graph:
             
         print(explored)
 
-    def dft_recursive(self, starting_vertex):
+    def dft_recursive(self, starting_vertex, explored=[]):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         This should be done using recursion.
         """
-        pass  # TODO
+        if starting_vertex not in explored:
+            print(starting_vertex)
+            explored.append(starting_vertex)
+            for v in self.vertices[starting_vertex]:
+                self.dft_recursive(v, explored)
+
+
     def bfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing the shortest path from
