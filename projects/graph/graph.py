@@ -12,17 +12,37 @@ class Graph:
         Add a vertex to the graph.
         """
         self.vertices[vertex] = set()
+
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
         self.vertices[v1].add(v2)
+
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        queue = Queue()
+        queue.enqueue(starting_vertex)
+
+        explored = set()
+
+        while queue.size() > 0:
+            u = queue.queue[0]
+
+            if u not in explored:
+                explored.add(u)
+
+                for v in self.vertices[u]:
+                    if v not in explored:
+                        queue.enqueue(v)
+            
+            queue.dequeue()
+
+        return explored
+
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
@@ -107,7 +127,8 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 5, 6
     '''
     graph.bft(1)
-
+    print(graph.bft(1))
+    print(graph.bft(1) == {1, 2, 3, 4, 5, 6, 7})
     '''
     Valid DFT recursive paths:
         1, 2, 3, 5, 4, 6, 7
