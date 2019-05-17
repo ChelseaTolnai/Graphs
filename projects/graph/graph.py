@@ -81,7 +81,19 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        queue = Queue()
+        queue.enqueue((starting_vertex, [starting_vertex]))
+
+        while queue.size() > 0:
+            u = queue.dequeue()
+
+            for v in self.vertices[u[0]]:
+                path = u[1]+[v]
+                if v == destination_vertex:
+                    return path
+                else:
+                    queue.enqueue((v, path))
+
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
