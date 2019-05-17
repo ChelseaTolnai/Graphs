@@ -27,28 +27,41 @@ class Graph:
         queue = Queue()
         queue.enqueue(starting_vertex)
 
-        explored = set()
+        explored = []
 
         while queue.size() > 0:
             u = queue.queue[0]
 
-            if u not in explored:
-                explored.add(u)
-
-                for v in self.vertices[u]:
-                    if v not in explored:
-                        queue.enqueue(v)
+            for v in self.vertices[u]:
+                if v not in explored:
+                    queue.enqueue(v)
             
+            explored.append(u)
             queue.dequeue()
 
-        return explored
+        print(explored)
 
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        stack = Stack()
+        stack.push(starting_vertex)
+
+        explored = []
+
+        while stack.size() > 0:
+            u = stack.pop()
+
+            if u not in explored:
+                explored.append(u)
+                for v in self.vertices[u]:
+                    if v not in explored:
+                        stack.push(v)
+            
+        print(explored)
+
     def dft_recursive(self, starting_vertex):
         """
         Print each vertex in depth-first order
@@ -101,7 +114,6 @@ if __name__ == '__main__':
         {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
     '''
     print(graph.vertices)
-    print(graph.vertices == {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}})
     '''
     Valid DFT paths:
         1, 2, 3, 5, 4, 6, 7
@@ -127,8 +139,6 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 5, 6
     '''
     graph.bft(1)
-    print(graph.bft(1))
-    print(graph.bft(1) == {1, 2, 3, 4, 5, 6, 7})
     '''
     Valid DFT recursive paths:
         1, 2, 3, 5, 4, 6, 7
