@@ -65,13 +65,30 @@ class SocialGraph:
         # Add users
             for i in range(numUsers):
                 self.addUser(f"User {i + 1}")
-        # Create friendships
-            friendships = [(userID, friendID) for userID in self.users for friendID in range(userID+1, self.lastID+1)]
-            random.shuffle(friendships)
-            connections = numUsers * avgFriendships // 2
-            friendships = friendships[:connections]
-            for friend in friendships:
-                self.addFriendship(friend[0], friend[1])
+        # Create friendships - O(n^2) runtime
+            # friendships = [(userID, friendID) for userID in self.users for friendID in range(userID+1, self.lastID+1)]
+            # random.shuffle(friendships)
+            # connections = numUsers * avgFriendships // 2
+            # friendships = friendships[:connections]
+            # for friend in friendships:
+            #     self.addFriendship(friend[0], friend[1])
+
+        # Stretch - Create friendships - O(n) runtime
+            connections = numUsers * avgFriendships // 2   # O(1)
+
+            for _ in range(connections):    # O(n)
+                userID = random.randint(1, numUsers)   # O(1)
+                friendID = random.randint(1, numUsers)   # O(1)
+
+                # # Ensure not befriending self and to keep getting new random integer until not equal
+                # while userID == friendID:
+                #     friendID = random.randint(1, numUsers)   # O(1)
+
+                # # Ensure not befriending an already connected friend
+                # while friendID in self.friendships[userID]:   # O(n)
+                #     friendID = random.randint(1, numUsers)   # O(1)
+
+                self.addFriendship(userID, friendID)   # O(1)
 
     def getAllSocialPaths(self, userID):
         """
@@ -126,4 +143,22 @@ Q:  If you create 1000 users with an average of 5 random friends each, what perc
 A:  After running several times, the percentage comes out to average a little over 99% of other users being in the social network 
     with an average of about 5 degrees of seperation.
 
+
+Stretch Goal
+Q:  You might have found the results from question #2 above to be surprising. 
+    Would you expect results like this in real life? 
+    If not, what are some ways you could improve your friendship distribution model for more realistic results?
+A:  I would not expect in real life for a user to be connected with 99% of all other users and by only 5 degrees.
+    One way to improve this model is to possibly not do a full shuffle of all the possible friendships.
+    That way some of the friends could be grouped together a little more realistically like real groups of friends.
+    You could also maybe write a shuffle algorithm that is weighted to try to pick a certain number or two 
+    more frequently than others to try to recreate a grouping of friends.
+
+Q:  If you followed the hints for part 1, your populateGraph() will run in O(n^2) time. 
+    Refactor your code to run in O(n) time. 
+    Are there any tradeoffs that come with this implementation?
+A:  Able to get it down to O(n) with a side effect that it can generate random invalid connections like trying to
+    befriend yourself or a friend a user you are already connected with. Cannot avoid this case unless creating a sub
+    function within the for loop which at worst would be O(n^2) but it reality would only run that second O(n) function
+    a few times not every time.
 """
