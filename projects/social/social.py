@@ -103,7 +103,27 @@ class SocialGraph:
 
 if __name__ == '__main__':
     sg = SocialGraph()
-    sg.populateGraph(10, 2)
+    sg.populateGraph(1000, 5)
     print(sg.friendships)
     connections = sg.getAllSocialPaths(1)
     print(connections)
+
+    sum = 0
+    for i in connections:
+        sum += len(connections[i])
+    percent = (len(connections)/1000)*100
+    print(f'{percent}%')
+    degree = sum/len(connections)
+    print(f'{degree}°')
+
+"""
+Q:  To create 100 users with an average of 10 friends each, how many times would you need to call addFriendship()? Why?
+A:  500. => The function is ran for every item in an array from index 0 to the number of connection you want to make.
+    The number of connections is determined by numUsers * avgFriendships // 2 ==> (100 * 10)//2 ==> 1000//2 ==> 500
+
+Q:  If you create 1000 users with an average of 5 random friends each, what percentage of other users will be in a particular user's extended social network? 
+    What is the average degree of separation between a user and those in his/her extended network?
+A:  After running several times, the percentage comes out to average a little over 99% of other users being in the social network 
+    with an average of about 5 degrees of seperation.
+
+"""
